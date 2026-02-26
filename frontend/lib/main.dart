@@ -4,16 +4,16 @@ import 'package:teacher_ai/core/constants/app_theme.dart';
 import 'package:teacher_ai/features/auth/login_screen.dart';
 
 void main() {
-  runApp(const ProviderScope(child: SproutAIApp()));
+  runApp(const ProviderScope(child: AiSchoolsApp()));
 }
 
-class SproutAIApp extends StatelessWidget {
-  const SproutAIApp({super.key});
+class AiSchoolsApp extends StatelessWidget {
+  const AiSchoolsApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Sprout AI',
+      title: 'AI Schools',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       home: const LoginScreen(),

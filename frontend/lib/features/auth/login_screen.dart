@@ -62,11 +62,11 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Stack(
               children: [
                 // Organic leaf decorators
-                Positioned(top: -40, right: -40,
+                const Positioned(top: -40, right: -40,
                   child: LeafDecorator(size: 280, color: AppTheme.gold, opacity: 0.08)),
-                Positioned(bottom: -60, left: -30,
+                const Positioned(bottom: -60, left: -30,
                   child: LeafDecorator(size: 240, color: Colors.white, opacity: 0.05)),
-                Positioned(top: 200, left: 40,
+                const Positioned(top: 200, left: 40,
                   child: LeafDecorator(size: 80, color: AppTheme.gold, opacity: 0.12)),
 
                 // Content
@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Sprout AI',
+                          Text('AI Schools',
                             style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w800,
                               color: Colors.white, letterSpacing: -0.5,
@@ -224,7 +224,7 @@ class _LoginScreenState extends State<LoginScreen> {
         const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Sprout AI',
+            Text('AI Schools',
               style: TextStyle(
                 fontSize: 17, fontWeight: FontWeight.w800,
                 color: AppTheme.brown, letterSpacing: -0.3,
@@ -313,11 +313,11 @@ class _LoginScreenState extends State<LoginScreen> {
         const Gap(20),
 
         // Divider
-        Row(
+        const Row(
           children: [
             Expanded(child: Divider(color: AppTheme.border)),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+              padding: EdgeInsets.symmetric(horizontal: 12),
               child: Text('or', style: TextStyle(fontSize: 12, color: AppTheme.textHint)),
             ),
             Expanded(child: Divider(color: AppTheme.border)),
@@ -353,7 +353,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
         // Footer
         const Center(
-          child: Text('Sprout AI © 2026',
+          child: Text('AI Schools © 2026',
             style: TextStyle(fontSize: 11, color: AppTheme.textHint)),
         ),
       ],

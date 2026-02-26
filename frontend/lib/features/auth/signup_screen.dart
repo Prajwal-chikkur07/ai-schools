@@ -89,7 +89,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Sprout AI',
+                        Text('AI Schools',
                             style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
                         Text('Teacher Assistant',
                             style: TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
@@ -124,7 +124,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ],
 
                 // Full Name
-                _Label('Full Name'),
+                const _Label('Full Name'),
                 const Gap(8),
                 TextField(
                   controller: _nameController,
@@ -137,7 +137,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const Gap(16),
 
                 // Teacher ID
-                _Label('Teacher ID'),
+                const _Label('Teacher ID'),
                 const Gap(8),
                 TextField(
                   controller: _idController,
@@ -149,7 +149,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const Gap(16),
 
                 // Email
-                _Label('Email'),
+                const _Label('Email'),
                 const Gap(8),
                 TextField(
                   controller: _emailController,
@@ -162,7 +162,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const Gap(16),
 
                 // Password
-                _Label('Password'),
+                const _Label('Password'),
                 const Gap(8),
                 TextField(
                   controller: _passwordController,
@@ -182,7 +182,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const Gap(16),
 
                 // Confirm Password
-                _Label('Confirm Password'),
+                const _Label('Confirm Password'),
                 const Gap(8),
                 TextField(
                   controller: _confirmController,
@@ -235,7 +235,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 const Gap(20),
 
                 const Center(
-                  child: Text('Sprout AI © 2025',
+                  child: Text('AI Schools © 2025',
                       style: TextStyle(fontSize: 12, color: AppTheme.textHint)),
                 ),
               ],

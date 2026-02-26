@@ -56,7 +56,7 @@ class _ManageGradesSubjectsScreenState
         const Divider(height: 1),
         Expanded(
           child: gs.grades.isEmpty
-              ? _EmptyHint(message: 'No grades yet. Add one above.')
+              ? const _EmptyHint(message: 'No grades yet. Add one above.')
               : ReorderableListView.builder(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   itemCount: gs.grades.length,
@@ -120,7 +120,7 @@ class _ManageGradesSubjectsScreenState
         const Divider(height: 1),
         Expanded(
           child: gs.subjects.isEmpty
-              ? _EmptyHint(message: 'No subjects yet. Add one above.')
+              ? const _EmptyHint(message: 'No subjects yet. Add one above.')
               : ReorderableListView.builder(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   itemCount: gs.subjects.length,
@@ -457,10 +457,10 @@ class _ResetBar extends StatelessWidget {
           const Icon(Icons.restore_rounded,
               size: 16, color: AppTheme.textSecondary),
           const Gap(8),
-          Expanded(
+          const Expanded(
             child: Text(
               'Changed your mind? You can reset to the default list.',
-              style: const TextStyle(
+              style: TextStyle(
                   fontSize: 12, color: AppTheme.textSecondary),
             ),
           ),
@@ -485,7 +485,7 @@ class _EmptyHint extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.inbox_rounded, size: 48, color: AppTheme.textHint),
+          const Icon(Icons.inbox_rounded, size: 48, color: AppTheme.textHint),
           const Gap(12),
           Text(message,
               style: const TextStyle(

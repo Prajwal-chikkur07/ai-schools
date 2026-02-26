@@ -82,7 +82,9 @@ class _WorksheetGeneratorScreenState
   void dispose() {
     _tabController.dispose();
     _topicController.dispose();
-    for (final c in _typeCounts.values) c.dispose();
+    for (final c in _typeCounts.values) {
+      c.dispose();
+    }
     _editController.dispose();
     super.dispose();
   }
@@ -467,8 +469,9 @@ class _WorksheetGeneratorScreenState
 
   Widget _buildBody() {
     if (_isEditingWorksheet) return _buildInlineEditor();
-    if (_viewingWorksheet != null)
+    if (_viewingWorksheet != null) {
       return _buildWorksheetViewer(_viewingWorksheet!);
+    }
     return TabBarView(
       controller: _tabController,
       children: [_buildCreateTab(), _buildSavedTab()],
@@ -526,7 +529,7 @@ class _WorksheetGeneratorScreenState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // ── Header ──────────────────────────────────────────────────
-          _SectionHeader(
+          const _SectionHeader(
             icon: Icons.auto_awesome_rounded,
             iconColor: AppTheme.success,
             iconBg: AppTheme.successLight,
@@ -544,7 +547,7 @@ class _WorksheetGeneratorScreenState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _FieldLabel(
+                const _FieldLabel(
                     icon: Icons.topic_rounded,
                     label: 'Topic',
                     hint: 'Optional — auto-derived from selections'),
@@ -565,7 +568,7 @@ class _WorksheetGeneratorScreenState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _FieldLabel(
+                const _FieldLabel(
                     icon: Icons.signal_cellular_alt_rounded,
                     label: 'Difficulty'),
                 const Gap(12),
@@ -641,7 +644,7 @@ class _WorksheetGeneratorScreenState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _FieldLabel(
+                const _FieldLabel(
                     icon: Icons.quiz_rounded, label: 'Question Types'),
                 const Gap(12),
                 Wrap(
@@ -708,7 +711,7 @@ class _WorksheetGeneratorScreenState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _FieldLabel(
+                const _FieldLabel(
                     icon: Icons.format_list_numbered_rounded,
                     label: 'Number of Questions'),
                 const Gap(10),
@@ -1196,7 +1199,7 @@ class _WorksheetGeneratorScreenState
             Container(
               width: 80,
               height: 80,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppTheme.successLight,
                 shape: BoxShape.circle,
               ),
@@ -1282,7 +1285,7 @@ class _WorksheetGeneratorScreenState
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
       decoration: BoxDecoration(
         color: AppTheme.surface,
-        border: Border(top: BorderSide(color: AppTheme.border)),
+        border: const Border(top: BorderSide(color: AppTheme.border)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -1375,7 +1378,7 @@ class _WorksheetGeneratorScreenState
               Container(
                 width: 80,
                 height: 80,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: AppTheme.surfaceAlt,
                   shape: BoxShape.circle,
                 ),
@@ -1598,13 +1601,11 @@ class _WorksheetGeneratorScreenState
 
 class _WorksheetEditorScreen extends StatefulWidget {
   final String initialContent;
-  final int? worksheetId;
   final Future<void> Function(String newContent) onSave;
 
   const _WorksheetEditorScreen({
     required this.initialContent,
     required this.onSave,
-    this.worksheetId,
   });
 
   @override

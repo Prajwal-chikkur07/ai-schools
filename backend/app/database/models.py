@@ -43,6 +43,35 @@ class Worksheet(Base):
     plan_id = Column(Integer, nullable=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
+class Engagement(Base):
+    __tablename__ = "engagements"
+
+    id = Column(Integer, primary_key=True, index=True)
+    teacher_id = Column(String, nullable=False, index=True)
+    grade = Column(String, nullable=False, server_default="")
+    subject = Column(String, nullable=False, server_default="")
+    title = Column(String, nullable=True)
+    topic = Column(String, nullable=False)
+    engagement_type = Column(String, nullable=False)
+    content = Column(Text, nullable=False)
+    plan_id = Column(Integer, nullable=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+
+class SimplifierResult(Base):
+    __tablename__ = "simplifier_results"
+
+    id = Column(Integer, primary_key=True, index=True)
+    teacher_id = Column(String, nullable=False, index=True)
+    grade = Column(String, nullable=False, server_default="")
+    subject = Column(String, nullable=False, server_default="")
+    title = Column(String, nullable=True)
+    topic = Column(String, nullable=False)
+    content = Column(Text, nullable=False)
+    plan_id = Column(Integer, nullable=True)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+
 def init_db():
     Base.metadata.create_all(bind=engine)
 

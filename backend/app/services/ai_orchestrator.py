@@ -28,6 +28,8 @@ class AIOrchestrator:
             is_valid, error_msg = output_validator.validate_content(response, feature)
             if is_valid:
                 return response
+            
+            
 
             logger.warning(f"Validation failed on attempt {attempt + 1}: {error_msg}")
             if attempt < max_retries:
@@ -62,12 +64,31 @@ class AIOrchestrator:
 
         return await self.generate_with_retry(system_prompt, user_prompt, "worksheet")
 
-    async def generate_engagement(self, topic: str, e_type: str, plan_content: Optional[str] = None):
+    async def generate_engagement(self, topic: str, e_type: str, plan_content: Optional[str] = None, num_questions: Optional[int] = None, activity_format: Optional[str] = None, discussion_format: Optional[str] = None):
         system_prompt = prompt_builder.get_system_prompt("engagement")
-        user_prompt = prompt_builder.build_engagement_prompt(topic, e_type)
+        user_prompt = prompt_builder.build_engagement_prompt(topic, e_type, num_questions=num_questions, activity_format=activity_format, discussion_format=discussion_format)
         if plan_content:
-            user_prompt = f"BASED ON THIS LESSON PLAN:\n{plan_content}\n\n---\n\n{user_prompt}"
-        return await self.generate_with_retry(system_prompt, user_prompt, "engagement")
+            user_prompt = f"BASED ON THIS LESSON PLAN/SESSION CONTENT:\n{plan_content}\n\n---\n\n{user_prompt}"
+        result = await self.generate_with_retry(system_prompt, user_prompt, "engagement")
+        return self._strip_preamble(result)
+
+    @staticmethod
+    def _strip_preamble(text: str) -> str:
+        """Remove conversational opener lines before the first Markdown heading."""
+        _PREAMBLE_STARTERS = (
+            "okay", "sure", "here are", "here is", "certainly", "of course",
+            "i've created", "i have created", "absolutely", "great", "below is",
+            "below are", "let me", "i'll", "i will",
+        )
+        lines = text.splitlines()
+        for i, line in enumerate(lines):
+            stripped = line.strip()
+            if stripped.startswith("#"):
+                return "\n".join(lines[i:]).strip()
+            if stripped and not any(stripped.lower().startswith(p) for p in _PREAMBLE_STARTERS):
+                # Non-preamble line reached before a heading — keep from here
+                return "\n".join(lines[i:]).strip()
+        return text.strip()
 
     async def simplify_concept(self, topic_or_text: str, plan_content: Optional[str] = None):
         system_prompt = prompt_builder.get_system_prompt("simplifier")

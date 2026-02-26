@@ -389,7 +389,7 @@ class _LessonPlannerScreenState extends ConsumerState<LessonPlannerScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _FieldLabel(icon: Icons.topic_rounded, label: 'Topic *'),
+                const _FieldLabel(icon: Icons.topic_rounded, label: 'Topic *'),
                 const Gap(10),
                 TextField(
                   controller: _topicController,
@@ -407,7 +407,7 @@ class _LessonPlannerScreenState extends ConsumerState<LessonPlannerScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _FieldLabel(
+                const _FieldLabel(
                     icon: Icons.list_alt_rounded,
                     label: 'Key Concepts',
                     hint: 'Optional'),
@@ -431,7 +431,7 @@ class _LessonPlannerScreenState extends ConsumerState<LessonPlannerScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _FieldLabel(
+                const _FieldLabel(
                     icon: Icons.school_outlined,
                     label: 'Number of Sessions'),
                 const Gap(10),
@@ -495,7 +495,7 @@ class _LessonPlannerScreenState extends ConsumerState<LessonPlannerScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _FieldLabel(
+                const _FieldLabel(
                     icon: Icons.upload_file_rounded,
                     label: 'Reference PDF',
                     hint: 'Optional'),
@@ -667,9 +667,9 @@ class _LessonPlannerScreenState extends ConsumerState<LessonPlannerScreen> {
                         ),
                         if (isSelected)
                           Container(
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: AppTheme.goldSurface,
-                              borderRadius: const BorderRadius.only(
+                              borderRadius: BorderRadius.only(
                                 bottomLeft: Radius.circular(14),
                                 bottomRight: Radius.circular(14),
                               ),

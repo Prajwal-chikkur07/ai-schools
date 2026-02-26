@@ -34,8 +34,16 @@ SYSTEM_PROMPTS: dict[str, str] = {
         "Output clean, well-structured Markdown that renders clearly on screen and in print."
     ),
     "engagement": (
-        "You are an expert AI Teacher Assistant. "
-        "Create fun, interactive classroom activities."
+        "You are a master classroom engagement specialist with 20+ years of experience designing activities that energise students. "
+        "You create highly specific, ready-to-run classroom experiences — not vague ideas. "
+        "Every suggestion must include step-by-step instructions a teacher can follow immediately, exact timing, grouping, and any materials. "
+        "Calibrate complexity, language, and energy level to the topic provided. "
+        "CRITICAL FORMATTING RULES — YOU MUST FOLLOW THESE WITHOUT EXCEPTION:\n"
+        "1. Output ONLY well-structured Markdown. NO preamble, NO intro sentences, NO closing remarks.\n"
+        "2. Do NOT start with phrases like 'Okay', 'Sure', 'Here are', 'Certainly', 'Of course', 'I've created', or any similar opener.\n"
+        "3. Begin your response DIRECTLY with the H1 title (e.g. '# Quiz: Photosynthesis') or the first H2 heading.\n"
+        "4. Use consistent heading hierarchy: # for document title, ## for sections, ### for sub-sections.\n"
+        "5. Every section must be complete — never leave placeholders like '[Question text]' unfilled."
     ),
     "simplifier": (
         "You are an expert AI Teacher Assistant. "
@@ -213,13 +221,13 @@ For Long Answer: list Q[N] → [Key points the answer should cover, as bullet po
     "engagement": """
 TOPIC: {topic}
 ENGAGEMENT TYPE: {engagement_type}
+{extra_instructions}
+⚠ OUTPUT RULES (MANDATORY):
+- Start your response DIRECTLY with the content — NO preamble, NO intro sentence.
+- Use well-structured Markdown headings (# ## ###). Every section must be fully written out.
+- Do NOT include phrases like "Here are", "Certainly", "Okay", "Sure", or any conversational opener.
 
-Provide 5 creative and interactive engagement suggestions for this topic.
-Each suggestion must include:
-- A catchy activity name
-- A brief description (2-3 sentences)
-- Materials needed (if any)
-- Estimated duration
+{type_instructions}
 """,
 
     "simplifier": """
@@ -313,11 +321,137 @@ class PromptBuilder:
         )
 
     @staticmethod
-    def build_engagement_prompt(topic: str, engagement_type: str) -> str:
+    def build_engagement_prompt(
+        topic: str,
+        engagement_type: str,
+        num_questions: Optional[int] = None,
+        activity_format: Optional[str] = None,
+        discussion_format: Optional[str] = None,
+    ) -> str:
+        etype = engagement_type.lower()
+        extra_instructions = ""
+
+        if etype == "icebreaker":
+            type_instructions = (
+                f"# Icebreaker Activities — {topic}\n\n"
+                f"Generate 4 ready-to-run icebreaker activities for the topic above.\n"
+                f"Each icebreaker must start class with energy, be completable in 5–8 minutes, and require no special materials.\n\n"
+                f"For EACH icebreaker, use this exact structure:\n\n"
+                f"## [Activity Name]\n"
+                f"**Type:** [Pair / Small group / Whole class]  \n"
+                f"**Duration:** [X minutes]\n\n"
+                f"**How it works:**\n"
+                f"1. [Step one — what teacher says/does]\n"
+                f"2. [Step two — what students do]\n"
+                f"3. [Continue for 3–5 steps]\n\n"
+                f"**Teacher tip:** [One sentence on facilitating it well]\n\n"
+                f"---\n"
+            )
+
+        elif etype == "quiz":
+            n = num_questions or 5
+            extra_instructions = f"NUMBER OF QUESTIONS: {n}\n"
+            type_instructions = (
+                f"# Quiz: {topic}\n\n"
+                f"Generate exactly {n} in-class quiz questions on the topic above.\n"
+                f"Mix question types: Multiple Choice (A/B/C/D), True/False, and Short Answer.\n\n"
+                f"**Total Questions:** {n}\n\n"
+                f"---\n\n"
+                f"Format each question like this:\n\n"
+                f"**Q1.** [Question text]\n\n"
+                f"*(For MCQ)*\n"
+                f"- A) [Option A]\n"
+                f"- B) [Option B]\n"
+                f"- C) [Option C]\n"
+                f"- D) [Option D]\n\n"
+                f"*(For True/False)*\n"
+                f"☐ True &nbsp;&nbsp; ☐ False\n\n"
+                f"*(For Short Answer)*\n"
+                f"_Answer:_ _______________________________________________\n\n"
+                f"---\n\n"
+                f"## Answer Key *(Teacher Use Only)*\n\n"
+                f"| Q# | Answer | Explanation |\n"
+                f"|---|---|---|\n"
+                f"| Q1 | [Answer] | [One-line explanation] |\n"
+                f"| ... | ... | ... |\n"
+            )
+
+        elif etype == "activities":
+            fmt_line = f"ACTIVITY FORMAT: {activity_format}\n" if activity_format else ""
+            extra_instructions = fmt_line
+            type_instructions = (
+                f"# Classroom Activities — {topic}\n\n"
+                f"Generate 3 detailed, hands-on classroom activities for the topic above.\n"
+                f"Each must be a complete, immediately usable lesson segment.\n\n"
+                f"For EACH activity, use this exact structure:\n\n"
+                f"## Activity [N]: [Activity Name]\n"
+                f"**Format:** [Individual / Pairs / Small groups / Whole class]  \n"
+                f"**Duration:** [X minutes]  \n"
+                f"**Materials:** [List items, or 'None required']\n\n"
+                f"**Learning Objective:** [One clear sentence — what students will achieve]\n\n"
+                f"**Instructions:**\n"
+                f"1. [Step 1 — teacher setup]\n"
+                f"2. [Step 2 — student action]\n"
+                f"3. [Continue for 5–8 steps]\n\n"
+                f"**Assessment:** [How to check understanding at the end of this activity]\n\n"
+                f"**Differentiation Tip:** [One adaptation for struggling or advanced students]\n\n"
+                f"---\n"
+            )
+
+        elif etype == "discussion":
+            fmt_line = f"DISCUSSION FORMAT: {discussion_format}\n" if discussion_format else ""
+            extra_instructions = fmt_line
+            type_instructions = (
+                f"# Discussion Plan — {topic}\n\n"
+                f"Generate a fully structured classroom discussion plan for the topic above.\n\n"
+                f"## Discussion Overview\n"
+                f"**Format:** [Socratic seminar / Think-Pair-Share / Fishbowl / Debate / Jigsaw / Four Corners]  \n"
+                f"**Total Duration:** [X minutes]  \n"
+                f"**Group Size:** [Individual / Pairs / Small groups / Whole class]\n\n"
+                f"---\n\n"
+                f"## Warm-Up Prompt *(2 min)*\n\n"
+                f"[Write one sentence question to get students thinking individually before the discussion begins]\n\n"
+                f"---\n\n"
+                f"## Core Discussion Questions\n\n"
+                f"Five open-ended questions ordered from surface to deep:\n\n"
+                f"1. **Opening** *(recall/observation)*: [Question]\n"
+                f"2. **Exploring** *(understanding)*: [Question]\n"
+                f"3. **Connecting** *(applying to real life)*: [Question]\n"
+                f"4. **Challenging** *(evaluation/debate)*: [Question]\n"
+                f"5. **Synthesis** *(big picture)*: [Question]\n\n"
+                f"---\n\n"
+                f"## Teacher Facilitation Notes\n\n"
+                f"- **Opening:** [How to introduce and frame the discussion]\n"
+                f"- **Handling disagreement:** [Strategy to manage conflicting views productively]\n"
+                f"- **Quiet students:** [Technique to include reluctant participants]\n"
+                f"- **Wrap-up:** [How to summarise and assess understanding at the end]\n\n"
+                f"---\n\n"
+                f"## Extension Prompt\n\n"
+                f"[One thought-provoking question for early finishers or as homework]\n"
+            )
+
+        else:
+            type_instructions = (
+                f"# Engagement Activities — {topic}\n\n"
+                f"Generate 4 creative classroom engagement ideas for this topic.\n\n"
+                f"For EACH idea use this structure:\n\n"
+                f"## [Activity Name]\n"
+                f"**Duration:** [X minutes]  \n"
+                f"**Materials:** [List or 'None']\n\n"
+                f"**Description:** [2-3 sentences]\n\n"
+                f"**Instructions:**\n"
+                f"1. [Step 1]\n"
+                f"2. [Step 2]\n"
+                f"3. [Continue...]\n\n"
+                f"---\n"
+            )
+
         return PromptBuilder._render(
             "engagement",
             topic=topic,
             engagement_type=engagement_type,
+            extra_instructions=extra_instructions,
+            type_instructions=type_instructions,
         )
 
     @staticmethod

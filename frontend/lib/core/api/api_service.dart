@@ -127,24 +127,123 @@ class ApiService {
     required String topic,
     required String type,
     int? planId,
+    String grade = '',
+    String subject = '',
+    String? sessionContext,
+    int? numQuestions,
+    String? activityFormat,
+    String? discussionFormat,
   }) async {
     final response = await http.post(
       Uri.parse('$baseUrl/generate-engagement'),
       headers: _headers,
-      body: json.encode(
-          {'topic': topic, 'engagement_type': type, 'plan_id': planId}),
+      body: json.encode({
+        'topic': topic,
+        'engagement_type': type,
+        'plan_id': planId,
+        'teacher_id': teacherId,
+        'grade': grade,
+        'subject': subject,
+        if (sessionContext != null && sessionContext.isNotEmpty)
+          'session_context': sessionContext,
+        if (numQuestions != null) 'num_questions': numQuestions,
+        if (activityFormat != null && activityFormat.isNotEmpty)
+          'activity_format': activityFormat,
+        if (discussionFormat != null && discussionFormat.isNotEmpty)
+          'discussion_format': discussionFormat,
+      }),
     ).timeout(_timeout);
     return json.decode(response.body);
   }
 
-  Future<Map<String, dynamic>> simplifyConcept(String text,
-      {int? planId}) async {
+  Future<List<Map<String, dynamic>>> fetchEngagements({
+    String grade = '',
+    String subject = '',
+  }) async {
+    final uri = Uri.parse('$baseUrl/engagements').replace(queryParameters: {
+      'teacher_id': teacherId,
+      'grade': grade,
+      'subject': subject,
+    });
+    final response =
+        await http.get(uri, headers: {'X-API-Key': _apiKey}).timeout(_timeout);
+    final List<dynamic> data = json.decode(response.body);
+    return data.cast<Map<String, dynamic>>();
+  }
+
+  Future<bool> updateEngagement(int engagementId,
+      {String? content, String? title}) async {
+    final body = <String, dynamic>{};
+    if (content != null) body['content'] = content;
+    if (title != null) body['title'] = title;
+    final response = await http.patch(
+      Uri.parse('$baseUrl/engagements/$engagementId'),
+      headers: _headers,
+      body: json.encode(body),
+    ).timeout(_timeout);
+    final data = json.decode(response.body);
+    return data['success'] == true;
+  }
+
+  Future<bool> deleteEngagement(int engagementId) async {
+    final response = await http.delete(
+      Uri.parse('$baseUrl/engagements/$engagementId'),
+      headers: {'X-API-Key': _apiKey},
+    ).timeout(_timeout);
+    final data = json.decode(response.body);
+    return data['success'] == true;
+  }
+
+  Future<Map<String, dynamic>> simplifyConcept(
+    String text, {
+    int? planId,
+    String grade = '',
+    String subject = '',
+  }) async {
     final response = await http.post(
       Uri.parse('$baseUrl/simplify-concept'),
       headers: _headers,
-      body: json.encode({'topic_or_text': text, 'plan_id': planId}),
+      body: json.encode({
+        'topic_or_text': text,
+        'plan_id': planId,
+        'teacher_id': teacherId,
+        'grade': grade,
+        'subject': subject,
+      }),
     ).timeout(_timeout);
     return json.decode(response.body);
+  }
+
+  Future<List<Map<String, dynamic>>> fetchSimplifierResults({
+    String grade = '',
+    String subject = '',
+  }) async {
+    final uri = Uri.parse('$baseUrl/simplifier-results').replace(
+      queryParameters: {'teacher_id': teacherId, 'grade': grade, 'subject': subject},
+    );
+    final response = await http.get(uri, headers: {'X-API-Key': _apiKey}).timeout(_timeout);
+    final List<dynamic> data = json.decode(response.body);
+    return data.cast<Map<String, dynamic>>();
+  }
+
+  Future<bool> updateSimplifierResult(int id, {String? content, String? title}) async {
+    final body = <String, dynamic>{};
+    if (content != null) body['content'] = content;
+    if (title != null) body['title'] = title;
+    final response = await http.patch(
+      Uri.parse('$baseUrl/simplifier-results/$id'),
+      headers: _headers,
+      body: json.encode(body),
+    ).timeout(_timeout);
+    return json.decode(response.body)['success'] == true;
+  }
+
+  Future<bool> deleteSimplifierResult(int id) async {
+    final response = await http.delete(
+      Uri.parse('$baseUrl/simplifier-results/$id'),
+      headers: {'X-API-Key': _apiKey},
+    ).timeout(_timeout);
+    return json.decode(response.body)['success'] == true;
   }
 
   Future<Map<String, dynamic>> regenerate({

@@ -32,7 +32,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: [
 
                 // ── Curriculum ───────────────────────────────────────────
-                _SectionTitle('Curriculum'),
+                const _SectionTitle('Curriculum'),
                 const Gap(10),
                 _Card(
                   child: Column(
@@ -55,7 +55,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const Gap(20),
 
                 // ── Preferences ──────────────────────────────────────────
-                _SectionTitle('Preferences'),
+                const _SectionTitle('Preferences'),
                 const Gap(10),
                 _Card(
                   child: Column(
@@ -95,7 +95,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const Gap(20),
 
                 // ── Notifications ────────────────────────────────────────
-                _SectionTitle('Notifications'),
+                const _SectionTitle('Notifications'),
                 const Gap(10),
                 _Card(
                   child: Column(
@@ -125,17 +125,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const Gap(20),
 
                 // ── About ────────────────────────────────────────────────
-                _SectionTitle('About'),
+                const _SectionTitle('About'),
                 const Gap(10),
                 _Card(
                   child: Column(
                     children: [
-                      _NavRow(
+                      const _NavRow(
                         icon: Icons.info_outline_rounded,
                         iconColor: AppTheme.textSecondary,
-                        iconBg: const Color(0xFFF1F5F9),
+                        iconBg: Color(0xFFF1F5F9),
                         label: 'App Version',
-                        subtitle: 'Sprout AI v1.0.0',
+                        subtitle: 'AI Schools v1.0.0',
                         onTap: null,
                         showArrow: false,
                       ),
@@ -330,7 +330,7 @@ class _ToggleRow extends StatelessWidget {
             Switch(
               value: value,
               onChanged: onChanged,
-              activeColor: AppTheme.brown,
+              activeThumbColor: AppTheme.brown,
             ),
           ],
         ),

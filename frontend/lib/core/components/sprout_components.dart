@@ -111,7 +111,6 @@ class _SproutCardState extends State<SproutCard> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeOut,
-        transform: Matrix4.identity()..translate(0, _isHovered ? -4.0 : 0.0),
         decoration: BoxDecoration(
           color: widget.color ?? AppTheme.surface,
           borderRadius: BorderRadius.circular(20),

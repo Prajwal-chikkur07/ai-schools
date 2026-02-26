@@ -144,7 +144,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Sprout AI',
+                        'AI Schools',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -257,7 +257,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         const Gap(24),
 
         // Quick Tools
-        _SectionLabel(icon: Icons.bolt_rounded, color: AppTheme.gold, label: 'Quick Tools'),
+        const _SectionLabel(icon: Icons.bolt_rounded, color: AppTheme.gold, label: 'Quick Tools'),
         const Gap(12),
         _buildFeatureIcons(isDesktop),
         const Gap(28),
@@ -315,63 +315,62 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               offset: const Offset(0, 4))
         ],
       ),
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Left sidebar
-            Container(
-              width: 220,
-              decoration: BoxDecoration(
-                color: AppTheme.surfaceWarm,
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    bottomLeft: Radius.circular(20)),
-                border:
-                    Border(right: BorderSide(color: AppTheme.border)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
-                    child: Text('Plans',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 14,
-                            color: AppTheme.textPrimary)),
-                  ),
-                  Flexible(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.only(bottom: 8),
-                      itemCount: plans.length,
-                      itemBuilder: (_, i) =>
-                          _PlanListTile(
-                        plan: plans[i],
-                        isActive: plans[i].id == state.activePlanId,
-                        onTap: () => setState(() {
-                          ref
-                              .read(planProvider.notifier)
-                              .setActivePlan(plans[i].id);
-                          _selectedLectureIndex = 0;
-                          _lectureTitleControllers.clear();
-                          _editingLectureIndices.clear();
-                        }),
-                        onDelete: () => _confirmDeletePlan(plans[i]),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Left sidebar
+          Container(
+            width: 220,
+            constraints: const BoxConstraints(minHeight: 500),
+            decoration: const BoxDecoration(
+              color: AppTheme.surfaceWarm,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  bottomLeft: Radius.circular(20)),
+              border:
+                  Border(right: BorderSide(color: AppTheme.border)),
             ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+                  child: Text('Plans',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
+                          color: AppTheme.textPrimary)),
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: const EdgeInsets.only(bottom: 8),
+                  itemCount: plans.length,
+                  itemBuilder: (_, i) =>
+                      _PlanListTile(
+                    plan: plans[i],
+                    isActive: plans[i].id == state.activePlanId,
+                    onTap: () => setState(() {
+                      ref
+                          .read(planProvider.notifier)
+                          .setActivePlan(plans[i].id);
+                      _selectedLectureIndex = 0;
+                      _lectureTitleControllers.clear();
+                      _editingLectureIndices.clear();
+                    }),
+                    onDelete: () => _confirmDeletePlan(plans[i]),
+                  ),
+                ),
+              ],
+            ),
+          ),
 
-            // Right panel
-            Expanded(
-              child: _buildRightPanel(activePlan, isDesktop: true),
-            ),
-          ],
-        ),
+          // Right panel
+          Expanded(
+            child: _buildRightPanel(activePlan, isDesktop: true),
+          ),
+        ],
       ),
     );
   }
@@ -397,9 +396,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 border: Border.all(
                     color: AppTheme.gold.withValues(alpha: 0.3)),
               ),
-              child: Row(
+              child: const Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Icon(Icons.arrow_back_rounded,
                       size: 16, color: AppTheme.brown),
                   Gap(6),
@@ -982,7 +981,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             Container(
               width: 60,
               height: 60,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: AppTheme.goldSurface, shape: BoxShape.circle),
               child: const Icon(Icons.add_rounded,
                   size: 30, color: AppTheme.brown),
@@ -1228,8 +1227,6 @@ class _FeatureCardState extends State<_FeatureCard> {
         onTap: widget.onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 160),
-          transform: Matrix4.identity()
-            ..translate(0.0, _hovered ? -4.0 : 0.0),
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
             color: _hovered ? widget.color : AppTheme.surface,
@@ -1308,8 +1305,6 @@ class _GridTileState extends State<_GridTile> {
         onTap: widget.onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 160),
-          transform: Matrix4.identity()
-            ..translate(0.0, _hovered ? -3.0 : 0.0),
           decoration: BoxDecoration(
             color: _hovered ? AppTheme.brown : AppTheme.surface,
             borderRadius: BorderRadius.circular(12),
@@ -1712,9 +1707,9 @@ class _EditPlanScreenState extends ConsumerState<_EditPlanScreen> {
                     ),
                     if (isSelected)
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: AppTheme.goldSurface,
-                          borderRadius: const BorderRadius.only(
+                          borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(14),
                             bottomRight: Radius.circular(14),
                           ),

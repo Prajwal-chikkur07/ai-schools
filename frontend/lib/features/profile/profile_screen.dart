@@ -75,10 +75,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       Stack(
                         children: [
-                          CircleAvatar(
+                          const CircleAvatar(
                             radius: 40,
                             backgroundColor: AppTheme.goldSurface,
-                            child: const Text(
+                            child: Text(
                               'SJ',
                               style: TextStyle(
                                 fontSize: 22,
@@ -146,7 +146,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const Gap(16),
 
                 // ── Personal Info ────────────────────────────────────────
-                _SectionTitle('Personal Information'),
+                const _SectionTitle('Personal Information'),
                 const Gap(10),
                 _Card(
                   child: Column(
@@ -186,7 +186,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const Gap(16),
 
                 // ── School Info ──────────────────────────────────────────
-                _SectionTitle('School Information'),
+                const _SectionTitle('School Information'),
                 const Gap(10),
                 _Card(
                   child: Column(
@@ -210,7 +210,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const Gap(16),
 
                 // ── Bio ──────────────────────────────────────────────────
-                _SectionTitle('Bio'),
+                const _SectionTitle('Bio'),
                 const Gap(10),
                 _Card(
                   child: _isEditing
@@ -238,7 +238,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const Gap(16),
 
                 // ── Danger zone ──────────────────────────────────────────
-                _SectionTitle('Account'),
+                const _SectionTitle('Account'),
                 const Gap(10),
                 _Card(
                   child: Column(
